@@ -1,80 +1,83 @@
 import { useMemo } from 'react';
 import { Wallet, Calendar, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import { KPICard } from '@/components/KPICard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import NewAppointmentForm from '@/components/NewAppointmentForm';
 import NewServiceForm from '@/components/NewServiceForm';
 import { useData } from '@/contexts/DataContext';
+import { useCajaTotals } from '@/hooks/useCaja';
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const { appointments, clients } = useData();
+  const { data: totals } = useCajaTotals();
 
   const todayStats = useMemo(() => {
     const today = new Date().toISOString().split('T')[0];
     const todayAppointments = appointments.filter(a => a.date === today);
-    const completedToday = todayAppointments.filter(a => a.status === 'completed');
-    const todayRevenue = completedToday.reduce((sum, a) => sum + a.price, 0);
     const scheduledToday = todayAppointments.filter(a => a.status === 'scheduled').length;
-    
-    return { todayRevenue, scheduledToday, totalClients: clients.length };
+    return { scheduledToday, totalClients: clients.length };
   }, [appointments, clients]);
 
   return (
     <div className="min-h-screen marble-bg pb-24">
       <Header />
-      
-      <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
+
+      <main className="max-w-lg lg:max-w-3xl mx-auto px-4 py-6 space-y-6">
         {/* Logo bienvenida */}
         <div className="flex flex-col items-center pt-2 pb-1 animate-fade-in">
-          <img
-            src="/LOGO ANDREA.jpg"
-            alt="AS Belleza y Bienestar"
-            className="h-28 w-auto object-contain drop-shadow-md rounded-2xl"
-          />
+          <img src="/LOGO ANDREA.jpg" alt="AS Belleza y Bienestar"
+            className="h-28 w-auto object-contain drop-shadow-md rounded-2xl" />
         </div>
 
-        {/* Premium KPI Card - Caja de hoy */}
-        <KPICard
-          title="Caja de hoy"
-          value={`${todayStats.todayRevenue} €`}
-          subtitle="Ingresos del día"
-          icon={Wallet}
-          variant="premium"
-          className="animate-fade-in"
-        />
-        
-        {/* Secondary KPIs */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* KPI Caja — clicable → /caja */}
+        <button
+          onClick={() => navigate('/caja')}
+          className="w-full text-left animate-fade-in group"
+        >
           <KPICard
-            title="Citas"
-            value={todayStats.scheduledToday.toString()}
-            subtitle="pendientes hoy"
-            icon={Calendar}
-            className="animate-fade-in"
+            title="Caja de hoy"
+            value={`${(totals?.today ?? 0).toFixed(2)} €`}
+            subtitle="Pulsa para registrar cobros →"
+            icon={Wallet}
+            variant="premium"
+            className="transition-all duration-200 group-hover:shadow-luxury group-hover:scale-[1.01]"
           />
-          <KPICard
-            title="Clientes"
-            value={todayStats.totalClients.toString()}
-            subtitle="registrados"
-            icon={Users}
-            className="animate-fade-in"
-          />
+        </button>
+
+        {/* KPIs secundarios */}
+        <div className="grid grid-cols-2 gap-4 animate-fade-in">
+          <button onClick={() => navigate('/calendar')} className="text-left group">
+            <KPICard
+              title="Citas"
+              value={todayStats.scheduledToday.toString()}
+              subtitle="pendientes hoy →"
+              icon={Calendar}
+              className="transition-all duration-200 group-hover:shadow-luxury group-hover:scale-[1.01]"
+            />
+          </button>
+          <button onClick={() => navigate('/clients')} className="text-left group">
+            <KPICard
+              title="Clientes"
+              value={todayStats.totalClients.toString()}
+              subtitle="registrados →"
+              icon={Users}
+              className="transition-all duration-200 group-hover:shadow-luxury group-hover:scale-[1.01]"
+            />
+          </button>
         </div>
 
-        {/* Quick Actions */}
-        <Tabs defaultValue="appointment" className="w-full">
+        {/* Acciones rápidas */}
+        <Tabs defaultValue="appointment" className="w-full animate-fade-in">
           <TabsList className="grid w-full grid-cols-2 bg-card/80 p-1.5 rounded-2xl border border-gold-light/30 shadow-soft">
-            <TabsTrigger 
-              value="appointment"
-              className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-rosegold/20 data-[state=active]:to-gold/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-gold-light/40 data-[state=active]:shadow-sm transition-all duration-300"
-            >
+            <TabsTrigger value="appointment"
+              className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-rosegold/20 data-[state=active]:to-gold/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-gold-light/40 data-[state=active]:shadow-sm transition-all duration-300">
               Nueva Cita
             </TabsTrigger>
-            <TabsTrigger 
-              value="service"
-              className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-rosegold/20 data-[state=active]:to-gold/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-gold-light/40 data-[state=active]:shadow-sm transition-all duration-300"
-            >
+            <TabsTrigger value="service"
+              className="rounded-xl data-[state=active]:bg-gradient-to-r data-[state=active]:from-rosegold/20 data-[state=active]:to-gold/10 data-[state=active]:text-foreground data-[state=active]:border data-[state=active]:border-gold-light/40 data-[state=active]:shadow-sm transition-all duration-300">
               Nuevo Servicio
             </TabsTrigger>
           </TabsList>
