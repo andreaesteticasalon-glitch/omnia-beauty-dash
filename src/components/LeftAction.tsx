@@ -3,7 +3,7 @@ import { useLocation, useNavigate, Link } from 'react-router-dom';
 import {
   ChevronLeft, Menu, X,
   Home, Calendar, Users, Sparkles,
-  ClipboardList, QrCode, Building2, ShoppingCart, Wallet, Package,
+  ClipboardList, QrCode, Building2, ShoppingCart, Wallet, Package, Bell, Megaphone,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { usePendingCount } from '@/hooks/useBookingRequests';
@@ -20,6 +20,8 @@ const MODULES = [
   { to: '/proveedores',  icon: Building2,      label: 'Proveedores',  color: 'from-pink-500/10 to-rose-400/10'      },
   { to: '/pedidos',      icon: ShoppingCart,   label: 'Pedidos',      color: 'from-teal-500/10 to-cyan-400/10'      },
   { to: '/inventario',   icon: Package,        label: 'Inventario',   color: 'from-orange-500/10 to-amber-400/10'   },
+  { to: '/seguimiento',  icon: Bell,           label: 'Seguimiento',  color: 'from-pink-500/10 to-rose-400/10'      },
+  { to: '/marketing',   icon: Megaphone,      label: 'Marketing',    color: 'from-violet-500/10 to-purple-400/10'  },
   { to: '/qr-code',      icon: QrCode,         label: 'QR',           color: 'from-indigo-500/10 to-blue-400/10'    },
 ];
 

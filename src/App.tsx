@@ -20,6 +20,8 @@ import Caja from "./pages/Caja";
 import Proveedores from "./pages/Proveedores";
 import Pedidos from "./pages/Pedidos";
 import Inventario from "./pages/Inventario";
+import Seguimiento from "./pages/Seguimiento";
+import Marketing from "./pages/Marketing";
 import BookingPortal from "./pages/BookingPortal";
 import BookingSuccess from "./pages/BookingSuccess";
 import NotFound from "./pages/NotFound";
@@ -51,6 +53,8 @@ function AppShell() {
         <Route path="/proveedores" element={<Proveedores />} />
         <Route path="/pedidos" element={<Pedidos />} />
         <Route path="/inventario" element={<Inventario />} />
+        <Route path="/seguimiento" element={<Seguimiento />} />
+        <Route path="/marketing" element={<Marketing />} />
         <Route path="/qr-code" element={<QRCodePage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

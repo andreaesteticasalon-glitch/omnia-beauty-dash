@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useCreateSeguimiento } from '@/hooks/useSeguimiento';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
@@ -34,6 +35,7 @@ export function AppointmentDetailSheet({
   appointment 
 }: AppointmentDetailSheetProps) {
   const navigate = useNavigate();
+  const createSeguimiento = useCreateSeguimiento();
   const { clients, services, updateAppointment, deleteAppointment, getClientById, getServiceById, addLoyaltyPoints } = useData();
   const [isEditing, setIsEditing] = useState(false);
   const [editClientId, setEditClientId] = useState('');
@@ -76,15 +78,24 @@ export function AppointmentDetailSheet({
 
   const handleComplete = () => {
     updateAppointment(appointment.id, { status: 'completed' });
-    
-    // Award loyalty points: 1 point per €10 spent
+
+    // Puntos de fidelidad: 1 punto por cada €10
     const pointsEarned = Math.floor(appointment.price / 10);
     if (pointsEarned > 0) {
       addLoyaltyPoints(appointment.clientId, pointsEarned);
-      toast.success(`Cita completada. ${client?.name} ganó ${pointsEarned} puntos de fidelidad! 🌟`);
+      toast.success(`Cita completada. ${client?.name} ganó ${pointsEarned} puntos de fidelidad!`);
     } else {
       toast.success('Cita marcada como completada');
     }
+
+    // Crear seguimiento post-tratamiento automático a 7 días
+    createSeguimiento.mutate({
+      client_id:      appointment.clientId,
+      appointment_id: appointment.id,
+      fecha_cita:     appointment.date,
+      dias_post:      7,
+    });
+
     onOpenChange(false);
   };
 
