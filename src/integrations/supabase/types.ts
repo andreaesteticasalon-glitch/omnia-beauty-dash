@@ -1,6 +1,15 @@
 export type LoyaltyTier     = 'bronze' | 'silver' | 'gold' | 'platinum';
 export type CategoriaProducto = 'tinte' | 'cosmético' | 'consumible' | 'herramienta' | 'limpieza' | 'otro';
 export type TipoMovimiento  = 'entrada' | 'salida' | 'ajuste' | 'merma';
+export type TipoEvidencia   = 'antes' | 'despues' | 'proceso' | 'resultado';
+export type TipoMedia       = 'foto' | 'video';
+export type EstadoSeguimiento  = 'pendiente' | 'contactado' | 'respondido' | 'sin_respuesta' | 'cerrado';
+export type CanalSeguimiento   = 'whatsapp' | 'email' | 'llamada' | 'presencial';
+export type EstadoPlan         = 'borrador' | 'confirmado' | 'activo' | 'completado' | 'archivado';
+export type PlataformaMkt      = 'instagram' | 'facebook' | 'whatsapp' | 'tiktok' | 'x' | 'web' | 'todos';
+export type TipoContenidoMkt   = 'foto' | 'video' | 'carrusel' | 'story' | 'reels' | 'texto' | 'oferta';
+export type EstadoPublicacion  = 'pendiente' | 'notificada' | 'confirmada' | 'publicada' | 'omitida';
+export type TipoNotificacionMkt = 'dia_antes' | 'hora_antes' | 'momento' | 'recordatorio_30min';
 export type AppointmentStatus = 'scheduled' | 'completed' | 'cancelled';
 export type BookingStatus   = 'pending' | 'accepted' | 'rejected' | 'cancelled';
 export type BookingChannel  = 'whatsapp' | 'qr_web';
@@ -324,6 +333,46 @@ export interface Database {
           referencia_tipo?: string | null; notas?: string | null; created_at?: string;
         };
       };
+      client_evidencias: {
+        Row: {
+          id: string; client_id: string; appointment_id: string | null;
+          service_id: string | null; tipo: TipoEvidencia; tipo_media: TipoMedia;
+          url: string; tratamiento: string | null; descripcion: string | null;
+          fecha: string; uso_marketing: boolean; created_at: string;
+        };
+        Insert: {
+          id?: string; client_id: string; appointment_id?: string | null;
+          service_id?: string | null; tipo: TipoEvidencia; tipo_media?: TipoMedia;
+          url: string; tratamiento?: string | null; descripcion?: string | null;
+          fecha?: string; uso_marketing?: boolean; created_at?: string;
+        };
+        Update: {
+          id?: string; client_id?: string; appointment_id?: string | null;
+          service_id?: string | null; tipo?: TipoEvidencia; tipo_media?: TipoMedia;
+          url?: string; tratamiento?: string | null; descripcion?: string | null;
+          fecha?: string; uso_marketing?: boolean; created_at?: string;
+        };
+      };
+      seguimiento_post: {
+        Row: {
+          id: string; client_id: string; appointment_id: string | null;
+          fecha_cita: string; fecha_objetivo: string; dias_post: number;
+          estado: EstadoSeguimiento; canal: CanalSeguimiento | null;
+          satisfaccion: number | null; notas: string | null; created_at: string;
+        };
+        Insert: {
+          id?: string; client_id: string; appointment_id?: string | null;
+          fecha_cita: string; fecha_objetivo: string; dias_post?: number;
+          estado?: EstadoSeguimiento; canal?: CanalSeguimiento | null;
+          satisfaccion?: number | null; notas?: string | null; created_at?: string;
+        };
+        Update: {
+          id?: string; client_id?: string; appointment_id?: string | null;
+          fecha_cita?: string; fecha_objetivo?: string; dias_post?: number;
+          estado?: EstadoSeguimiento; canal?: CanalSeguimiento | null;
+          satisfaccion?: number | null; notas?: string | null; created_at?: string;
+        };
+      };
       stock_entradas: {
         Row: {
           id: string; pedido_id: string | null; pedido_linea_id: string | null;
@@ -353,6 +402,31 @@ export interface Database {
           fecha_recibida?: string | null; created_at?: string;
         };
       };
+      marketing_conexiones: {
+        Row: { id: string; plataforma: PlataformaMkt; nombre_cuenta: string | null; page_id: string | null; token: string | null; activa: boolean; config: Record<string,unknown> | null; created_at: string };
+        Insert: { id?: string; plataforma: PlataformaMkt; nombre_cuenta?: string | null; page_id?: string | null; token?: string | null; activa?: boolean; config?: Record<string,unknown> | null; created_at?: string };
+        Update: { id?: string; plataforma?: PlataformaMkt; nombre_cuenta?: string | null; page_id?: string | null; token?: string | null; activa?: boolean; config?: Record<string,unknown> | null; created_at?: string };
+      };
+      marketing_planes: {
+        Row: { id: string; nombre: string; fecha_inicio: string; fecha_fin: string; estado: EstadoPlan; resumen_datos: Record<string,unknown> | null; objetivos: string | null; created_at: string };
+        Insert: { id?: string; nombre: string; fecha_inicio: string; fecha_fin: string; estado?: EstadoPlan; resumen_datos?: Record<string,unknown> | null; objetivos?: string | null; created_at?: string };
+        Update: { id?: string; nombre?: string; fecha_inicio?: string; fecha_fin?: string; estado?: EstadoPlan; resumen_datos?: Record<string,unknown> | null; objetivos?: string | null; created_at?: string };
+      };
+      marketing_publicaciones: {
+        Row: { id: string; plan_id: string; plataforma: PlataformaMkt; fecha_publicacion: string; hora_publicacion: string; tipo_contenido: TipoContenidoMkt; titulo: string | null; texto_publicacion: string; hashtags: string | null; evidencia_id: string | null; url_imagen_custom: string | null; servicio_id: string | null; oferta_descripcion: string | null; estado: EstadoPublicacion; confirmada_at: string | null; notas_andrea: string | null; created_at: string };
+        Insert: { id?: string; plan_id: string; plataforma: PlataformaMkt; fecha_publicacion: string; hora_publicacion: string; tipo_contenido: TipoContenidoMkt; titulo?: string | null; texto_publicacion: string; hashtags?: string | null; evidencia_id?: string | null; url_imagen_custom?: string | null; servicio_id?: string | null; oferta_descripcion?: string | null; estado?: EstadoPublicacion; confirmada_at?: string | null; notas_andrea?: string | null; created_at?: string };
+        Update: { id?: string; plan_id?: string; plataforma?: PlataformaMkt; fecha_publicacion?: string; hora_publicacion?: string; tipo_contenido?: TipoContenidoMkt; titulo?: string | null; texto_publicacion?: string; hashtags?: string | null; evidencia_id?: string | null; url_imagen_custom?: string | null; servicio_id?: string | null; oferta_descripcion?: string | null; estado?: EstadoPublicacion; confirmada_at?: string | null; notas_andrea?: string | null; created_at?: string };
+      };
+      marketing_notificaciones: {
+        Row: { id: string; publicacion_id: string; tipo: TipoNotificacionMkt; fecha_envio: string; enviada: boolean; leida: boolean; confirmada: boolean; created_at: string };
+        Insert: { id?: string; publicacion_id: string; tipo: TipoNotificacionMkt; fecha_envio: string; enviada?: boolean; leida?: boolean; confirmada?: boolean; created_at?: string };
+        Update: { id?: string; publicacion_id?: string; tipo?: TipoNotificacionMkt; fecha_envio?: string; enviada?: boolean; leida?: boolean; confirmada?: boolean; created_at?: string };
+      };
+      marketing_analisis: {
+        Row: { id: string; fecha_analisis: string; periodo_dias: number; datos: Record<string,unknown>; recomendaciones: unknown[] | null; created_at: string };
+        Insert: { id?: string; fecha_analisis: string; periodo_dias?: number; datos: Record<string,unknown>; recomendaciones?: unknown[] | null; created_at?: string };
+        Update: { id?: string; fecha_analisis?: string; periodo_dias?: number; datos?: Record<string,unknown>; recomendaciones?: unknown[] | null; created_at?: string };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -376,3 +450,10 @@ export type PedidoLineaRow       = Database['public']['Tables']['pedido_lineas']
 export type StockEntradaRow         = Database['public']['Tables']['stock_entradas']['Row'];
 export type InventarioProductoRow   = Database['public']['Tables']['inventario_productos']['Row'];
 export type InventarioMovimientoRow = Database['public']['Tables']['inventario_movimientos']['Row'];
+export type ClientEvidenciaRow      = Database['public']['Tables']['client_evidencias']['Row'];
+export type SeguimientoPostRow          = Database['public']['Tables']['seguimiento_post']['Row'];
+export type MarketingConexionRow        = Database['public']['Tables']['marketing_conexiones']['Row'];
+export type MarketingPlanRow            = Database['public']['Tables']['marketing_planes']['Row'];
+export type MarketingPublicacionRow     = Database['public']['Tables']['marketing_publicaciones']['Row'];
+export type MarketingNotificacionRow    = Database['public']['Tables']['marketing_notificaciones']['Row'];
+export type MarketingAnalisisRow        = Database['public']['Tables']['marketing_analisis']['Row'];

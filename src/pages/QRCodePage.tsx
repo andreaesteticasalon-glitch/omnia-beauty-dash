@@ -32,7 +32,7 @@ export default function QRCodePage() {
   };
 
   return (
-    <div className="min-h-screen marble-bg pb-24">
+    <div className="min-h-screen bg-background">
       <Header />
       <main className="max-w-lg mx-auto px-4 py-6 space-y-6">
         <div className="animate-fade-in">

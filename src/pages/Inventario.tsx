@@ -590,7 +590,7 @@ export default function Inventario() {
   const openAjuste = (p: ProductoConProveedor) => setAjusteProducto(p);
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="pb-2">
       <Header title="Inventario" />
 
       <div className="px-4 pt-4 space-y-4 max-w-2xl mx-auto">

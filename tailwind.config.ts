@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        serif: ['Playfair Display', 'Georgia', 'serif'],
+        sans:    ['Manrope', 'Inter', 'system-ui', 'sans-serif'],
+        serif:   ['Instrument Serif', 'Cormorant Garamond', 'Georgia', 'serif'],
+        mono:    ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+        display: ['Instrument Serif', 'Georgia', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -62,8 +64,22 @@ export default {
           dark: "hsl(var(--rosegold-dark))",
         },
         sage: {
-          DEFAULT: "hsl(140, 20%, 55%)",
+          DEFAULT: "hsl(var(--sage))",
+          soft: "hsl(var(--sage-soft))",
           foreground: "hsl(140, 25%, 25%)",
+        },
+        terracota: {
+          DEFAULT: "#B86E54",
+          soft:    "#F4E3DB",
+          dark:    "#8A4E3A",
+        },
+        warn: {
+          DEFAULT: "hsl(var(--warn))",
+          soft:    "hsl(var(--warn-soft))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          soft:    "hsl(var(--info-soft))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
@@ -139,12 +155,12 @@ export default {
         "sparkle": "sparkle 1.5s ease-in-out infinite",
       },
       boxShadow: {
-        'soft': '0 4px 20px -4px hsla(30, 30%, 50%, 0.1)',
-        'card': '0 8px 32px -8px hsla(30, 30%, 40%, 0.12)',
-        'elevated': '0 16px 48px -12px hsla(30, 30%, 30%, 0.15)',
-        'luxury': '0 10px 40px -10px hsla(38, 60%, 50%, 0.2)',
-        'glow': '0 0 30px hsla(12, 55%, 60%, 0.3)',
-        'gold': '0 4px 20px -4px hsla(38, 70%, 50%, 0.3)',
+        'soft':     '0 1px 2px rgba(43,39,34,0.04)',
+        'card':     '0 6px 24px -12px rgba(43,39,34,0.10), 0 1px 2px rgba(43,39,34,0.04)',
+        'elevated': '0 24px 48px -28px rgba(43,39,34,0.18), 0 2px 4px rgba(43,39,34,0.04)',
+        'luxury':   '0 10px 32px -10px rgba(184,110,84,0.16)',
+        'glow':     '0 0 24px rgba(184,110,84,0.20)',
+        'gold':     '0 4px 16px -4px rgba(184,110,84,0.22)',
       },
     },
   },

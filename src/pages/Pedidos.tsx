@@ -961,7 +961,7 @@ export default function Pedidos() {
   }, []);
 
   return (
-    <div className="min-h-screen marble-bg pb-24">
+    <div className="pb-2">
       <Header />
       <main className="max-w-lg lg:max-w-3xl mx-auto px-4 py-6 space-y-5">
 

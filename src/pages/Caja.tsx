@@ -207,7 +207,7 @@ export default function Caja() {
   };
 
   return (
-    <div className="min-h-screen marble-bg pb-24">
+    <div className="min-h-screen bg-background">
       <Header />
 
       <main className="max-w-lg lg:max-w-3xl mx-auto px-4 py-6 space-y-5">

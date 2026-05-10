@@ -1,14 +1,22 @@
-const Header = () => {
+// Header: only rendered inside pages for a page-title row on desktop.
+// On mobile the AppLayout MobileHeader handles navigation chrome.
+interface HeaderProps {
+  title?: string;
+  actions?: React.ReactNode;
+}
+
+const Header = ({ title, actions }: HeaderProps) => {
+  if (!title && !actions) return null;
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gold-light/30 bg-card/90 backdrop-blur-xl">
-      <div className="container flex h-16 items-center justify-center">
-        <img
-          src="/LOGO ANDREA.jpg"
-          alt="AS Belleza y Bienestar · Beauty Salon"
-          className="h-11 w-auto object-contain drop-shadow-sm"
-        />
-      </div>
-    </header>
+    <div className="hidden lg:flex items-end justify-between gap-6 mb-7 pb-6 border-b border-border">
+      {title && (
+        <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 40, lineHeight: 1, margin: 0, letterSpacing: '-0.01em' }}>
+          {title}
+        </h1>
+      )}
+      {actions && <div className="flex items-center gap-2">{actions}</div>}
+    </div>
   );
 };
 
