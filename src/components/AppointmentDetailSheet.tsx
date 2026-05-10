@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { SmartSelect } from '@/components/SmartSelect';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { useData } from '@/contexts/DataContext';
@@ -32,6 +33,7 @@ export function AppointmentDetailSheet({
   onOpenChange, 
   appointment 
 }: AppointmentDetailSheetProps) {
+  const navigate = useNavigate();
   const { clients, services, updateAppointment, deleteAppointment, getClientById, getServiceById, addLoyaltyPoints } = useData();
   const [isEditing, setIsEditing] = useState(false);
   const [editClientId, setEditClientId] = useState('');
@@ -147,18 +149,14 @@ export function AppointmentDetailSheet({
                     <User className="h-4 w-4 text-gold" strokeWidth={1.5} />
                     Cliente
                   </Label>
-                  <Select value={editClientId} onValueChange={setEditClientId}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar cliente..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {clients.map((c) => (
-                        <SelectItem key={c.id} value={c.id}>
-                          {c.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SmartSelect
+                    value={editClientId}
+                    onChange={setEditClientId}
+                    options={clients.map(c => ({ value: c.id, label: c.name, subtitle: c.phone ?? undefined }))}
+                    placeholder="Seleccionar cliente..."
+                    createLabel="Añadir nueva cliente"
+                    onCreateNew={() => { setIsEditing(false); onOpenChange(false); navigate('/clients'); }}
+                  />
                 </div>
 
                 {/* Edit Service */}
@@ -167,21 +165,14 @@ export function AppointmentDetailSheet({
                     <Sparkles className="h-4 w-4 text-gold" strokeWidth={1.5} />
                     Servicio
                   </Label>
-                  <Select value={editServiceId} onValueChange={setEditServiceId}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Seleccionar servicio..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {services.map((s) => (
-                        <SelectItem key={s.id} value={s.id}>
-                          <div className="flex justify-between items-center w-full gap-3">
-                            <span>{s.name}</span>
-                            <span className="text-gold font-medium">{s.price}€</span>
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <SmartSelect
+                    value={editServiceId}
+                    onChange={setEditServiceId}
+                    options={services.map(s => ({ value: s.id, label: s.name, subtitle: `${s.price} €` }))}
+                    placeholder="Seleccionar servicio..."
+                    createLabel="Añadir nuevo servicio"
+                    onCreateNew={() => { setIsEditing(false); onOpenChange(false); navigate('/services'); }}
+                  />
                 </div>
 
                 {/* Edit Notes */}

@@ -1,31 +1,21 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { CalendarPlus, User, Scissors, Euro, Camera, FileText, Upload, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { SmartSelect } from "@/components/SmartSelect";
+import { useData } from "@/contexts/DataContext";
 import { useToast } from "@/hooks/use-toast";
 import { FloralFrame } from "./FloralFrame";
 
-const services = [
-  { id: "1", name: "Manicura", price: 25 },
-  { id: "2", name: "Pedicura", price: 30 },
-  { id: "3", name: "Limpieza facial", price: 45 },
-  { id: "4", name: "Depilación láser", price: 80 },
-  { id: "5", name: "Masaje relajante", price: 55 },
-];
-
 const NewAppointmentForm = () => {
+  const navigate = useNavigate();
   const { toast } = useToast();
+  const { clients, services } = useData();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [client, setClient] = useState("");
+  const [clientId, setClientId] = useState("");
   const [selectedService, setSelectedService] = useState("");
   const [price, setPrice] = useState("");
   const [notes, setNotes] = useState("");
@@ -80,14 +70,13 @@ const NewAppointmentForm = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+    const client = clients.find(c => c.id === clientId);
     toast({
       title: "Cita guardada",
-      description: `Cita para ${client} registrada correctamente.`,
+      description: `Cita para ${client?.name ?? 'cliente'} registrada correctamente.`,
     });
 
-    // Reset form
-    setClient("");
+    setClientId("");
     setSelectedService("");
     setPrice("");
     setNotes("");
@@ -96,39 +85,36 @@ const NewAppointmentForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
-      {/* Client Name */}
+      {/* Client Selection */}
       <div className="space-y-2">
-        <Label htmlFor="client" className="flex items-center gap-2 text-sm font-medium text-foreground">
+        <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
           <User className="h-4 w-4 text-gold" strokeWidth={1.5} />
           Cliente
         </Label>
-        <Input
-          id="client"
-          placeholder="Nombre del cliente"
-          value={client}
-          onChange={(e) => setClient(e.target.value)}
-          required
+        <SmartSelect
+          value={clientId}
+          onChange={setClientId}
+          options={clients.map(c => ({ value: c.id, label: c.name, subtitle: c.phone ?? undefined }))}
+          placeholder="Seleccionar cliente..."
+          createLabel="Añadir nueva cliente"
+          onCreateNew={() => navigate('/clients')}
         />
       </div>
 
       {/* Service Select */}
       <div className="space-y-2">
-        <Label htmlFor="service" className="flex items-center gap-2 text-sm font-medium text-foreground">
+        <Label className="flex items-center gap-2 text-sm font-medium text-foreground">
           <Scissors className="h-4 w-4 text-gold" strokeWidth={1.5} />
           Servicio
         </Label>
-        <Select value={selectedService} onValueChange={handleServiceChange} required>
-          <SelectTrigger>
-            <SelectValue placeholder="Selecciona un servicio" />
-          </SelectTrigger>
-          <SelectContent>
-            {services.map((service) => (
-              <SelectItem key={service.id} value={service.id}>
-                {service.name} - {service.price}€
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <SmartSelect
+          value={selectedService}
+          onChange={handleServiceChange}
+          options={services.map(s => ({ value: s.id, label: s.name, subtitle: `${s.price} €` }))}
+          placeholder="Seleccionar servicio..."
+          createLabel="Añadir nuevo servicio"
+          onCreateNew={() => navigate('/services')}
+        />
       </div>
 
       {/* Price */}

@@ -137,6 +137,11 @@
     font-feature-settings: "cv11", "ss01";
     background: var(--gradient-marble);
     min-height: 100vh;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .dark body {
+    background: hsl(25, 20%, 8%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -145,19 +150,35 @@
 }
 
 @layer utilities {
-  /* Marble background pattern */
+  /* Marble background pattern — light */
   .marble-bg {
-    background: 
+    background:
       radial-gradient(ellipse at 20% 30%, hsla(350, 25%, 92%, 0.6) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 20%, hsla(38, 40%, 90%, 0.4) 0%, transparent 40%),
       radial-gradient(ellipse at 60% 70%, hsla(15, 30%, 93%, 0.5) 0%, transparent 45%),
       radial-gradient(ellipse at 30% 80%, hsla(38, 50%, 92%, 0.3) 0%, transparent 35%),
-      linear-gradient(135deg, 
-        hsl(20, 25%, 96%) 0%, 
-        hsl(350, 18%, 94%) 25%, 
-        hsl(20, 30%, 97%) 50%, 
-        hsl(15, 22%, 93%) 75%, 
+      linear-gradient(135deg,
+        hsl(20, 25%, 96%) 0%,
+        hsl(350, 18%, 94%) 25%,
+        hsl(20, 30%, 97%) 50%,
+        hsl(15, 22%, 93%) 75%,
         hsl(25, 20%, 95%) 100%);
+    background-attachment: fixed;
+  }
+
+  /* Marble background pattern — dark */
+  .dark .marble-bg {
+    background:
+      radial-gradient(ellipse at 20% 30%, hsla(350, 20%, 12%, 0.8) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, hsla(38, 25%, 14%, 0.6) 0%, transparent 40%),
+      radial-gradient(ellipse at 60% 70%, hsla(15, 18%, 11%, 0.7) 0%, transparent 45%),
+      radial-gradient(ellipse at 30% 80%, hsla(38, 30%, 13%, 0.4) 0%, transparent 35%),
+      linear-gradient(135deg,
+        hsl(25, 20%, 8%)  0%,
+        hsl(20, 18%, 10%) 25%,
+        hsl(25, 20%, 9%)  50%,
+        hsl(15, 18%, 8%)  75%,
+        hsl(20, 20%, 9%)  100%);
     background-attachment: fixed;
   }
 
@@ -295,6 +316,13 @@
 
   .drop-target {
     @apply ring-2 ring-gold ring-offset-2 bg-gold/10;
+  }
+}
+
+/* Desktop: expande el contenido más allá de mobile-first max-w-lg */
+@media (min-width: 1024px) {
+  main.max-w-lg {
+    max-width: 48rem; /* ~ max-w-2xl */
   }
 }
 
