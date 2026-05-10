@@ -256,7 +256,7 @@ export default function Marketing() {
   const planesArchivados = planes.filter(p => p.estado === 'archivado' || p.estado === 'completado');
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="pb-2">
       <Header title="Marketing" />
 
       <div className="max-w-lg mx-auto px-4 pt-4 space-y-4">

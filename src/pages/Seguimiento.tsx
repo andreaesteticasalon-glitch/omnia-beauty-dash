@@ -247,7 +247,7 @@ export default function Seguimiento() {
   const satMedia = kpis?.satMedia;
 
   return (
-    <div className="min-h-screen bg-background pb-24">
+    <div className="pb-2">
       <Header title="Seguimiento" />
 
       <div className="max-w-lg mx-auto px-4 pt-4 space-y-5">

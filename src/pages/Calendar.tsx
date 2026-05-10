@@ -3,7 +3,7 @@ import { WeekCalendar } from '@/components/WeekCalendar';
 
 export default function Calendar() {
   return (
-    <div className="min-h-screen marble-bg pb-24">
+    <div className="min-h-screen bg-background">
       <Header />
       
       <main className="max-w-4xl mx-auto px-4 py-6 space-y-6">

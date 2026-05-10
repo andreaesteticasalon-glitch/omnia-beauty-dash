@@ -540,7 +540,7 @@ export default function Proveedores() {
   );
 
   return (
-    <div className="min-h-screen marble-bg pb-24">
+    <div className="min-h-screen bg-background">
       <Header />
       <main className="max-w-lg lg:max-w-3xl mx-auto px-4 py-6 space-y-5">
         <div className="flex items-center justify-between animate-fade-in">
